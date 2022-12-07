@@ -118,19 +118,33 @@ class DbOperation
 	{
 		$stmt = $this->con->prepare("SELECT statusLogin FROM Logado WHERE IDCliente = '$id'");
 		$stmt->bind_result($status);
+		$stmt->execute();
+
 		$resultado = 0;
+		$statusLg  = array();
 
 		while($stmt->fetch()){
 			$resultado++;
+			$Lg = array();
+			$Lg['statusLogin'] = $status; 
+		
+			array_push($statusLg, $Lg); 
 		}
-
+		//var_dump($statusLg);
+		$statusLoginFinal = $statusLg[0]['statusLogin'];
+	
 		if($resultado > 0)
 		{
-			$stmt = $this->con->prepare("UPDATE Logado SET statusLogin = 1 WHERE IDCliente = '$id'");
-			
+			if ($statusLoginFinal == 0)
+			{
+				$stmt = $this->con->prepare("UPDATE Logado SET statusLogin = 1,  DataLogin = NOW() WHERE IDCliente = '$id'");
+			}else 
+			{
+				$stmt = $this->con->prepare("UPDATE Logado SET statusLogin = 0,  DataLogin = NOW() WHERE IDCliente = '$id'");
+			}
 		}else 
 		{
-			$stmt = $this->con->prepare("INSERT INTO Logado (IDCliente)VALUES '$id'");
+			$stmt = $this->con->prepare("INSERT INTO Logado (statusLogin, IDCliente)VALUES (1 ,'$id')");
 		}
 		if($stmt->execute())
 			return true;
