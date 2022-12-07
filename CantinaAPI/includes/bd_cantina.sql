@@ -38,6 +38,15 @@ DROP DATABASE IF EXISTS Cantina;
 			CONSTRAINT FK_Estabelecimento FOREIGN KEY (IDEstabelecimento) REFERENCES Estabelecimento(IDEstabelecimento)
 	);
 
+	CREATE TABLE Logado(
+		statusLogin INT DEFAULT 0,
+		IDCliente INT NOT NULL,
+		DataLogin VARCHAR(20) DEFAULT NOW(),
+
+		CONSTRAINT FK_IDCliente FOREIGN KEY (IDCliente) REFERENCES Clientes(IDCliente)
+
+	);
+
 	
 
 	INSERT INTO Produtos

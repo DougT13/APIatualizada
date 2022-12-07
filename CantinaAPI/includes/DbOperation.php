@@ -106,11 +106,63 @@ class DbOperation
 			$id['ID'] = $this->retornaIDCliente($email, $senha);
 			//echo "O id do cliente é: ".$id;
 			array_push($resp, $id);
+			$this->mudarStatusLogin($id['ID']);
 			return $resp;
 		}
 		else
 		 return false; 
 		
+	} 
+	
+	function mudarStatusLogin($id)
+	{
+		$stmt = $this->con->prepare("SELECT statusLogin FROM Logado WHERE IDCliente = '$id'");
+		$stmt->bind_result($status);
+		$resultado = 0;
+
+		while($stmt->fetch()){
+			$resultado++;
+		}
+
+		if($resultado > 0)
+		{
+			$stmt = $this->con->prepare("UPDATE Logado SET statusLogin = 1 WHERE IDCliente = '$id'");
+			
+		}else 
+		{
+			$stmt = $this->con->prepare("INSERT INTO Logado (IDCliente)VALUES '$id'");
+		}
+		if($stmt->execute())
+			return true;
+		return false;	
+		
+		
+	}
+
+	function statusLogin($idCliente)
+	{
+
+		$stmt = $this->con->prepare("SELECT statusLogin FROM Logado WHERE IDCliente = '$idCliente'");
+		$stmt->execute();
+		$stmt->bind_result($id);
+		$resultado = 0;
+
+		while($stmt->fetch())
+		{
+			$resultado++;
+		}
+		
+		$resp = array();
+		if($resultado > 0)
+		{
+			$idArray = array();
+			$idArray['ID'] = $id;
+			//echo "O id do cliente é: ".$id;
+			array_push($resp, $idArray);
+			return $resp;
+		}
+		else
+		 return false; 
 	}
 
 

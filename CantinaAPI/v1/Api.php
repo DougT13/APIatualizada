@@ -147,6 +147,30 @@
 				}
 			break;
 
+			case 'statusLogin':
+				$db = new DbOperation();
+				isTheseParametersAvailable(array('IDCliente'));
+				
+				$result = $db->statusLogin(
+					$_POST['IDCliente']
+				);
+
+				if($result)
+				{
+					
+					$response['error'] = false; 
+					$response['message'] = 'Status recebido';
+
+				}
+				else
+				{
+					$response['error'] = true; 
+					$response['message'] = 'Algum erro ocorreu, por favor tente novamente';
+				}
+
+
+			break;	
+
 			case 'cadastraItens':
 
 				$db = new DbOperation();
