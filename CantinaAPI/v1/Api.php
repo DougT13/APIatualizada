@@ -160,6 +160,7 @@
 					
 					$response['error'] = false; 
 					$response['message'] = 'Status recebido';
+					$response['statusLogin'] = $result;
 
 				}
 				else
@@ -168,6 +169,31 @@
 					$response['message'] = 'Algum erro ocorreu, por favor tente novamente';
 				}
 
+
+			break;
+
+			case 'pegarDadosUsuario':
+
+				$db = new DbOperation();
+				isTheseParametersAvailable(array('IDCliente'));
+				
+				$result = $db->pegarDadosUsuario(
+					$_POST['IDCliente']
+				);
+
+				if($result)
+				{
+					
+					$response['error'] = false; 
+					$response['message'] = 'dados recebidos!';
+					$response['dados'] = $result;
+
+				}
+				else
+				{
+					$response['error'] = true; 
+					$response['message'] = 'Algum erro ocorreu, por favor tente novamente';
+				}
 
 			break;	
 

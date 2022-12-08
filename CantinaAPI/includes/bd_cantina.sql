@@ -21,7 +21,7 @@ DROP DATABASE IF EXISTS Cantina;
 	CREATE TABLE Clientes(
 		IDCliente INT auto_increment NOT NULL PRIMARY KEY,
 		Nome VARCHAR(100) NOT NULL,
-		Telefone BIGINT(14) NOT NULL,
+		Telefone VARCHAR(14) NOT NULL UNIQUE KEY,
 		Email VARCHAR(100) NOT NULL UNIQUE KEY,
         Senha VARCHAR(100) NOT NULL
 );
@@ -120,3 +120,5 @@ DROP DATABASE IF EXISTS Cantina;
 	('4', '2', '7'),
 	('4', '3', '8'),
 	('4', '4', '9');
+
+	

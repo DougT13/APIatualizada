@@ -53,6 +53,34 @@ class DbOperation
 		return $idPedido;
 	}
 
+	function pegarDadosUsuario($id){
+		$stmt = $this->con->prepare("SELECT * FROM Clientes WHERE IDCliente = '$id'");
+		$stmt->execute();
+		$stmt->bind_result($IDCliente, $Nome, $Telefone, $Email, $Senha);
+		
+
+		$dadosCliente = array(); 
+		
+		while($stmt->fetch()){
+			$dado  = array();
+			$dado['IDCliente'] = $IDCliente;
+			$dado['Nome'] = $Nome;	
+			$dado['Telefone'] = $Telefone; 
+			$dado['Email'] = $Email;
+			$dado['Senha'] = $Senha;
+			array_push($dadosCliente, $dado); 
+		}
+
+		$sttLogin = $this->statusLogin($dadosCliente[0]['IDCliente']);
+		$sttLogin = $sttLogin[0]['statusLogin'];
+
+		if($sttLogin == 1){
+			return $dadosCliente;
+		}return false;
+		
+		
+	}
+
 
 	function getClientePedidos($IDCliente)
 	{
@@ -131,10 +159,11 @@ class DbOperation
 			array_push($statusLg, $Lg); 
 		}
 		//var_dump($statusLg);
-		$statusLoginFinal = $statusLg[0]['statusLogin'];
+		
 	
 		if($resultado > 0)
 		{
+			$statusLoginFinal = $statusLg[0]['statusLogin'];
 			if ($statusLoginFinal == 0)
 			{
 				$stmt = $this->con->prepare("UPDATE Logado SET statusLogin = 1,  DataLogin = NOW() WHERE IDCliente = '$id'");
@@ -170,7 +199,7 @@ class DbOperation
 		if($resultado > 0)
 		{
 			$idArray = array();
-			$idArray['ID'] = $id;
+			$idArray['statusLogin'] = $id;
 			//echo "O id do cliente é: ".$id;
 			array_push($resp, $idArray);
 			return $resp;
