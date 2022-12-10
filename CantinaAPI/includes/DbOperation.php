@@ -53,33 +53,7 @@ class DbOperation
 		return $idPedido;
 	}
 
-	function pegarDadosUsuario($id){
-		$stmt = $this->con->prepare("SELECT * FROM Clientes WHERE IDCliente = '$id'");
-		$stmt->execute();
-		$stmt->bind_result($IDCliente, $Nome, $Telefone, $Email, $Senha);
-		
-
-		$dadosCliente = array(); 
-		
-		while($stmt->fetch()){
-			$dado  = array();
-			$dado['IDCliente'] = $IDCliente;
-			$dado['Nome'] = $Nome;	
-			$dado['Telefone'] = $Telefone; 
-			$dado['Email'] = $Email;
-			$dado['Senha'] = $Senha;
-			array_push($dadosCliente, $dado); 
-		}
-
-		$sttLogin = $this->statusLogin($dadosCliente[0]['IDCliente']);
-		$sttLogin = $sttLogin[0]['statusLogin'];
-
-		if($sttLogin == 1){
-			return $dadosCliente;
-		}return false;
-		
-		
-	}
+	
 
 
 	function getClientePedidos($IDCliente)
@@ -140,7 +114,39 @@ class DbOperation
 		else
 		 return false; 
 		
-	} 
+	}
+	
+	//PEGA OS DADOS DO USUÁRIO SE statusLogin for 1
+
+	function pegarDadosUsuario($id){
+		$stmt = $this->con->prepare("SELECT * FROM Clientes WHERE IDCliente = '$id'");
+		$stmt->execute();
+		$stmt->bind_result($IDCliente, $Nome, $Telefone, $Email, $Senha);
+		
+
+		$dadosCliente = array(); 
+		
+		while($stmt->fetch()){
+			$dado  = array();
+			$dado['IDCliente'] = $IDCliente;
+			$dado['Nome'] = $Nome;	
+			$dado['Telefone'] = $Telefone; 
+			$dado['Email'] = $Email;
+			$dado['Senha'] = $Senha;
+			array_push($dadosCliente, $dado); 
+		}
+
+		$sttLogin = $this->statusLogin($dadosCliente[0]['IDCliente']);
+		$sttLogin = $sttLogin[0]['statusLogin'];
+
+		if($sttLogin == 1){
+			return $dadosCliente;
+		}return false;
+		
+		
+	}
+
+	//MUDA O STATUS DO LOGIN DEPENDENDO DO QUE ESTEJA
 	
 	function mudarStatusLogin($id)
 	{
@@ -181,6 +187,8 @@ class DbOperation
 		
 		
 	}
+
+	//PEGA O STATUS :D
 
 	function statusLogin($idCliente)
 	{
