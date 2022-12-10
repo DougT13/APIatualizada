@@ -106,8 +106,9 @@ class DbOperation
 		{
 			$id = array();
 			$id['ID'] = $this->retornaIDCliente($email, $senha);
+			$dados = $this->pegarDadosUsuario($id['ID']);
 			//echo "O id do cliente é: ".$id;
-			array_push($resp, $id);
+			array_push($resp, $dados);
 			$this->mudarStatusLogin($id['ID']);
 			return $resp;
 		}

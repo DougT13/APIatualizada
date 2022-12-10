@@ -251,7 +251,7 @@
 				{
 					$response['error'] = false; 
 					$response['message'] = 'logado com sucesso';
-					$response['IDCliente'] = $result; 
+					$response['dados'] = $result; 
 				}else {
 					$response['error'] = true; 
 					$response['message'] = 'email ou senha incorretos!';
